@@ -1,6 +1,6 @@
 # Streamdeck-Homematic
 
-Streamdeck plugin that adds support for some components the Homematic home automation system.
+Streamdeck plugin that adds support for some components of the Homematic home automation system.
 
 ## Requirements
 
