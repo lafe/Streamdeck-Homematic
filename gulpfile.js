@@ -14,11 +14,9 @@ const fs = require('fs');
 const log = require('fancy-log');
 const eslint = require('gulp-eslint');
 
-const config = {
-    appName: "dev.fernhomberg.streamdeck.homematic",
-};
+const appName = "dev.fernhomberg.streamdeck.homematic.sdPlugin";
 
-const rootDistFolder = `dist/${config.appName}`;
+const rootDistFolder = `dist/${appName}`;
 const srcDistFolder = `${rootDistFolder}`;
 const assetDistFolder = `${rootDistFolder}/assets`;
 
@@ -29,7 +27,7 @@ function lint() {
         .pipe(eslint.failAfterError());
 }
 
-function build() {
+function buildTypeScript() {
     return tsProject
         .src()
         .pipe(tsProject())
@@ -44,7 +42,7 @@ function copyHtml() {
 
 function copyManifest() {
     return src("./manifest.json")
-        .pipe(jeditor((json)=> {
+        .pipe(jeditor((json) => {
             const packageDefinition = JSON.parse(fs.readFileSync("./package.json"));
             json.Version = packageDefinition.version;
             json["$schema"] = undefined;
@@ -59,11 +57,26 @@ function copyAssets() {
         .pipe(dest(assetDistFolder));
 }
 
-exports.default = parallel(series(lint, build), copyHtml, copyManifest, copyAssets);
+function copyToAppData() {
+    return src(`${rootDistFolder}/**/*.*`)
+        .pipe(dest(`${process.env.HOME}\\AppData\\Roaming\\Elgato\\StreamDeck\\Plugins\\${appName}`));
+
+}
+
+exports.default = parallel(
+    series(
+        lint,
+        buildTypeScript
+    ),
+    copyHtml,
+    copyManifest,
+    copyAssets
+);
+
 exports.lint = lint;
 exports.watch = () => {
-    watch("src/**/*.ts", series(lint, build));
-    watch("src/**/*.html", copyHtml);
-    watch(["./manifest.json", "./package.json"], copyManifest);
-    watch("assets/**/*.png", copyAssets);
+    watch("src/**/*.ts", series(lint, buildTypeScript, copyToAppData));
+    watch("src/**/*.html", series(copyHtml, copyToAppData));
+    watch(["./manifest.json", "./package.json"], series(copyManifest, copyToAppData));
+    watch("assets/**/*.png", series(copyAssets, copyToAppData));
 };
