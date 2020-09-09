@@ -2,6 +2,7 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "$id": "https://github.com/lafe/Streamdeck-Homematic/streamdeck.schema.json",
     "title": "Schema for Streamdeck Manifest file",
+    "description": "This schema is based on the official documentation by Elgato available at https://developer.elgato.com/documentation/stream-deck/sdk/manifest/",
     "type": "object",
     "definitions": {
         "action": {
