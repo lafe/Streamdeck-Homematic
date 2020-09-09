@@ -1,0 +1,24 @@
+{
+  "name": "streamdeck-homematic",
+  "version": "0.0.1",
+  "description": "Streamdeck Plugin for the Homatic home automation system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lafe/Streamdeck-Homematic.git"
+  },
+  "keywords": [
+    "Homematic",
+    "Streamdeck"
+  ],
+  "license": "UNLICENSED",
+  "private": true,
+  "author": "Lars Fernhomberg",
+  "bugs": {
+    "url": "https://github.com/lafe/Streamdeck-Homematic/issues"
+  },
+  "homepage": "https://github.com/lafe/Streamdeck-Homematic#readme"
+}
