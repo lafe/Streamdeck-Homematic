@@ -1,0 +1,327 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$id": "https://github.com/lafe/Streamdeck-Homematic/streamdeck.schema.json",
+    "title": "Schema for Streamdeck Manifest file",
+    "type": "object",
+    "definitions": {
+        "action": {
+            "description": "Defines a single action",
+            "type": "object",
+            "properties": {
+                "Icon": {
+                    "description": "The relative path to a PNG image (without .png extension)",
+                    "type": "string"
+                },
+                "Name": {
+                    "description": "The display name of the Action that is displayed to the end user",
+                    "type": "string"
+                },
+                "PropertyInspectorPath": {
+                    "description": "An alternative path to an entry point for the Property Inspector. If set, this will override the PropertyInspectorPath value of the plugin itself.",
+                    "type": "string"
+                },
+                "States": {
+                    "description": "Defines the states the action can have",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/state"
+                    },
+                    "minItems": 1,
+                    "maxItems": 2
+                },
+                "SupportedInMultiActions": {
+                    "description": "Defines if the action can be used in multi-actions. Default value is true.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "Tooltip": {
+                    "description": "The tooltip that is displayed for the action in the actions list",
+                    "type": "string"
+                },
+                "UUID": {
+                    "description": "The unique identifier of the plugin. It must be a \"uniform type identifier\" that contains only lowercase alphanumeric characters, hyphen and period. The string must be in reverse-DNS format.",
+                    "type": "string"
+                },
+                "VisibleInActionsList": {
+                    "description": "Defines if the action is visible in the actions list. Default value is true.",
+                    "type": "boolean",
+                    "default": true
+                }
+            },
+            "required": [
+                "Icon",
+                "Name",
+                "States",
+                "UUID"
+            ]
+        },
+        "state": {
+            "type": "object",
+            "properties": {
+                "Image": {
+                    "description": "Contains the default image for this state",
+                    "type": "string"
+                },
+                "MultiActionImage": {
+                    "description": "Alternate image for the action if it is part of a multi-action",
+                    "type": "string"
+                },
+                "Name": {
+                    "description": "The name of the state",
+                    "type": "string"
+                },
+                "Title": {
+                    "description": "The default title of the state",
+                    "type": "string"
+                },
+                "ShowTitle": {
+                    "description": "Determines if the title should be visible. Default value is true.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "TitleColor": {
+                    "description": "The default color of the title",
+                    "type": "string"
+                },
+                "TitleAlignment": {
+                    "description": "The default vertical alignment of the title.",
+                    "enum": [
+                        "top",
+                        "middle",
+                        "bottom"
+                    ],
+                    "type": "string"
+                },
+                "FontFamily": {
+                    "description": "The default font family used for the title",
+                    "enum": [
+                        "Arial",
+                        "Arial Black",
+                        "Comic Sans MS",
+                        "Courier",
+                        "Courier New",
+                        "Georgia",
+                        "Impact",
+                        "Microsoft Sans Serif",
+                        "Symbol",
+                        "Tahoma",
+                        "Times New Roman",
+                        "Trebuchet MS",
+                        "Verdana",
+                        "Webdings",
+                        "Wingdings"
+                    ],
+                    "type": "string"
+                },
+                "FontStyle": {
+                    "description": "The default style the title can be rendered in",
+                    "enum": [
+                        "Regular",
+                        "Bold",
+                        "Italic",
+                        "Bold Italic"
+                    ],
+                    "type": "string"
+                },
+                "FontSize": {
+                    "description": "The default size of the title",
+                    "type": "string"
+                },
+                "FontUnderline": {
+                    "description": "Determines if the title is underlined. Default value is false",
+                    "type": "boolean",
+                    "default": false
+                }
+            },
+            "required": [
+                "Image"
+            ]
+        },
+        "profile": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "description": "The filename of the profile",
+                    "type": "string"
+                },
+                "DeviceType": {
+                    "description": "Defines the type of the device",
+                    "enum": [
+                        "kESDSDKDeviceType_StreamDeck",
+                        "kESDSDKDeviceType_StreamDeckMini",
+                        "kESDSDKDeviceType_StreamDeckXL",
+                        "kESDSDKDeviceType_StreamDeckMobile",
+                        "kESDSDKDeviceType_CorsairGKeys"
+                    ],
+                    "type": "string"
+                },
+                "ReadOnly": {
+                    "description": "Allows to flag the profile as read-only. Default value is false",
+                    "type": "boolean",
+                    "default": false
+                },
+                "DontAutoSwitchWhenInstalled": {
+                    "description": "Prevents Stream Deck to automatically switch to this profile when it is installed. Default value is false",
+                    "type": "boolean",
+                    "default": false
+                }
+            },
+            "required": [
+                "Name",
+                "DeviceType"
+            ]
+        },
+        "operatingSystem": {
+            "type": "object",
+            "properties": {
+                "Platform": {
+                    "description": "The identifier of the platform",
+                    "enum": [
+                        "mac",
+                        "windows"
+                    ],
+                    "type": "string"
+                },
+                "MinimumVersion": {
+                    "description": "The minimum version of the specified platform that is supported. For Windows, you can use 10 to identify Windows 10.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Platform",
+                "MinimumVersion"
+            ]
+        },
+        "streamDeckDetails": {
+            "type": "object",
+            "properties": {
+                "MinimumVersion": {
+                    "description": "The minimum version of Stream Deck that is supported by this plugin. The oldest version possible is 4.1.",
+                    "type": "string",
+                    "default": "4.1"
+                }
+            }
+        },
+        "applicationToMonitor": {
+            "type": "object",
+            "properties": {
+                "mac": {
+                    "description": "Mac application bundles the plugin should notified about.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "windows": {
+                    "description": "Windows applications the plugin should notified about.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "properties": {
+        "Actions": {
+            "description": "Defines the actions of the plugin",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/action"
+            }
+        },
+        "Author": {
+            "description": "The author of the plugin",
+            "type": "string"
+        },
+        "Category": {
+            "description": "The name of the category under which the actions are listed",
+            "type": "string"
+        },
+        "CategoryIcon": {
+            "description": "The relative path to the icon (in PNG format) but without the .png extension",
+            "type": "string"
+        },
+        "CodePath": {
+            "description": "The relative path to the HTML/binary file that is the main entry point of this plugin",
+            "type": "string"
+        },
+        "CodePathWin": {
+            "description": "A custom path that overrides the CodePath on Windows based machines",
+            "type": "string"
+        },
+        "CodePathMac": {
+            "description": "A custom path that overrides the CodePath on macOS based machines",
+            "type": "string"
+        },
+        "Description": {
+            "description": "A general description of the purpose of this plugin",
+            "type": "string"
+        },
+        "Icon": {
+            "description": "The relative path to a PNG file (without .png extension) that is displayed in the store",
+            "type": "string"
+        },
+        "Name": {
+            "description": "The displayed name of the plugin in the store",
+            "type": "string"
+        },
+        "Profiles": {
+            "description": "An array of profiles that are proposed to the end user during installation",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/profile"
+            }
+        },
+        "PropertyInspectorPath": {
+            "description": "The relative path to the HTML file of the Propery Inspector. If it is empty, the plugin will have an empty property inspector",
+            "type": "string"
+        },
+        "DefaultWindowSize": {
+            "description": "Defines the default window size of a new window opened by the property inspector. Default value is [500, 650].",
+            "type": "string"
+        },
+        "URL": {
+            "description": "A URL to a page with more details about the plugin",
+            "type": "string"
+        },
+        "Version": {
+            "description": "The version of the plugin. The value can only contain digits and periods.",
+            "type": "string"
+        },
+        "SDKVersion": {
+            "description": "The value of the used SDK. This value should be 2",
+            "type": "number",
+            "default": 2
+        },
+        "OS": {
+            "description": "The operating systems and versions supported by this plugin",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/operatingSystem"
+            }
+        },
+        "Software": {
+            "$ref": "#/definitions/streamDeckDetails"
+        },
+        "ApplicationsToMonitor": {
+            "description": "An array of all applications that should be monitored",
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/applicationToMonitor"
+            }
+        }
+    },
+    "required": [
+        "Actions",
+        "Author",
+        "CodePath",
+        "Description",
+        "Icon",
+        "Name",
+        "Version",
+        "SDKVersion",
+        "OS",
+        "Software"
+    ]
+}
