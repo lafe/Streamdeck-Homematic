@@ -10,15 +10,20 @@ const {
 const jeditor = require("gulp-json-editor");
 const ts = require("gulp-typescript");
 const tsProject = ts.createProject("tsconfig.json");
-const fs = require('fs');
-const log = require('fancy-log');
-const eslint = require('gulp-eslint');
+const fs = require("fs");
+const log = require("fancy-log");
+const eslint = require("gulp-eslint");
+const del = require("del");
 
 const appName = "dev.fernhomberg.streamdeck.homematic.sdPlugin";
 
 const rootDistFolder = `dist/${appName}`;
 const srcDistFolder = `${rootDistFolder}`;
 const assetDistFolder = `${rootDistFolder}/assets`;
+
+function clean() {
+    return del([`${rootDistFolder}/**/*`]);
+}
 
 function lint() {
     return src(["src/**/*.ts"])
@@ -63,7 +68,8 @@ function copyToAppData() {
 
 }
 
-exports.default = parallel(
+const build = parallel(
+    clean,
     series(
         lint,
         buildTypeScript
@@ -73,10 +79,12 @@ exports.default = parallel(
     copyAssets
 );
 
+
+exports.default = build;
 exports.lint = lint;
 exports.watch = () => {
-    watch("src/**/*.ts", series(lint, buildTypeScript, copyToAppData));
-    watch("src/**/*.html", series(copyHtml, copyToAppData));
-    watch(["./manifest.json", "./package.json"], series(copyManifest, copyToAppData));
-    watch("assets/**/*.png", series(copyAssets, copyToAppData));
+    watch("src/**/*.ts", series(build, copyToAppData));
+    watch("src/**/*.html", series(build, copyToAppData));
+    watch(["./manifest.json", "./package.json"], series(build, copyToAppData));
+    watch("assets/**/*.png", series(build, copyToAppData));
 };
