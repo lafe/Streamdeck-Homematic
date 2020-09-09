@@ -14,7 +14,7 @@ const config = {
 };
 
 const rootDistFolder = `dist/${config.appName}`;
-const srcDistFolder = `${rootDistFolder}/src`;
+const srcDistFolder = `${rootDistFolder}`;
 const assetDistFolder = `${rootDistFolder}/assets`;
 
 function build() {
