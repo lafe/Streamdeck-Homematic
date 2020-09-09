@@ -1,4 +1,7 @@
-class StreamDeck {
+import { getWebSocketError } from "./common/getWebSocketError";
+import "./extensions/WebSocketExtensions";
+
+export class StreamDeck {
     private static instance: StreamDeck;
     public static getInstance(): StreamDeck {
         if (StreamDeck.instance == null) {
@@ -14,7 +17,7 @@ class StreamDeck {
     public inActionInfo?: string;
     private websocket?: WebSocket;
 
-    protected showVars() {
+    protected showVars(): void {
         debugLog("---- showVars");
         debugLog("- port", this.inPort);
         debugLog("- uuid", this.inUUID);
@@ -24,7 +27,7 @@ class StreamDeck {
         debugLog("----< showVars");
     }
 
-    public connect(inPort: string, inUUID: string, inMessageType: string, inApplicationInfo: string, inActionInfo: string) {
+    public connect(inPort: string, inUUID: string, inMessageType: string, inApplicationInfo: string, inActionInfo: string): void {
         this.inPort = inPort;
         this.inUUID = inUUID;
         this.inMessageType = inMessageType;

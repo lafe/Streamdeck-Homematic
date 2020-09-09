@@ -9,14 +9,14 @@ const {
 } = require("gulp");
 const jeditor = require("gulp-json-editor");
 const ts = require("gulp-typescript");
-const tsProject = ts.createProject("tsconfig.json");
 const fs = require("fs");
 const log = require("fancy-log");
 const eslint = require("gulp-eslint");
 const del = require("del");
+const webpack = require("webpack-stream");
+const compiler = require("webpack");
 
 const appName = "dev.fernhomberg.streamdeck.homematic.sdPlugin";
-
 const rootDistFolder = `dist/${appName}`;
 const srcDistFolder = `${rootDistFolder}`;
 const assetDistFolder = `${rootDistFolder}/assets`;
@@ -33,10 +33,12 @@ function lint() {
 }
 
 function buildTypeScript() {
-    return tsProject
-        .src()
-        .pipe(tsProject())
-        .js
+    return src("./src/app.ts")
+        .pipe(webpack(require("./webpack.config.js"), compiler, (err, stats)=> {
+            if(err != null){
+                log.error(`An error occured during the webpack task: ${err.message}`, err);
+            }
+        }))
         .pipe(dest(srcDistFolder));
 }
 

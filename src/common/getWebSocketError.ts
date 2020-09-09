@@ -1,4 +1,4 @@
-function getWebSocketError(evt: CloseEvent) : string {
+export function getWebSocketError(evt: CloseEvent) : string {
     // Websocket is closed
     let reason = "";
     if (evt.code === 1000) {

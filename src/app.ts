@@ -1,3 +1,5 @@
+import { StreamDeck } from "./StreamDeck";
+
 /*
  * This is the first function StreamDeck Software calls, when establishing the connection to the plugin or the Property Inspector
  *
@@ -7,7 +9,6 @@
  * @param {string} inApplicationInfo - Information about the host (StreamDeck) application
  * @param {string} inActionInfo - Context is an internal identifier used to communicate to the host application.
  */
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function connectElgatoStreamDeckSocket(inPort: string, inUUID: string, inMessageType: string, inApplicationInfo: string, inActionInfo: string) {
     // window.$SD.api = Object.assign({ send: SDApi.send }, SDApi.common, SDApi[inMessageType]);
