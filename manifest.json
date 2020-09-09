@@ -1,5 +1,24 @@
 {
     "$schema": "./streamdeck.schema.json",
+    "Actions": [
+        {
+			"Icon": "assets/PluginLogo",
+			"Name": "On / Off",
+			"States": [
+				{
+                    "Name": "On",
+                    "Image": "assets/PluginLogo"
+				},
+				{
+                    "Name": "Off",
+                    "Image": "assets/PluginLogo"
+				}
+			],
+			"Tooltip": "Switch the light on or off",
+			"UUID": "dev.fernhomberg.streamdeck.homematic.lights-on-off"
+		}
+    ],
+    
     "SDKVersion": 2,
     "Author": "Lars Fernhomberg",
     "CodePath": "index.html",
@@ -16,7 +35,5 @@
     ],
     "Software": {
         "MinimumVersion": "4.1"
-    },
-
-    "Actions": []
+    }
 }
