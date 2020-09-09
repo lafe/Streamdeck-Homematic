@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/lafe/Streamdeck-Homematic/issues"
   },
-  "homepage": "https://github.com/lafe/Streamdeck-Homematic#readme"
+  "homepage": "https://github.com/lafe/Streamdeck-Homematic#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "typescript": "^4.0.2"
+  }
 }
