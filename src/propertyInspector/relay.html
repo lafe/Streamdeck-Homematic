@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover">
-        <meta name=apple-mobile-web-app-capable content=yes>
-        <meta name=apple-mobile-web-app-status-bar-style content=black>
-        <title>dev.fernhomberg.streamdeck.homematic Property Inspector</title>
-        <link rel="stylesheet" href="css/sdpi.css">
-    </head>
-    <body>
-        <div class="sdpi-wrapper">
+<html>
 
-          <!-- DROP HTML-STUFF BELOW -->
+<head>
+	<meta charset="utf-8" />
+	<meta name=viewport
+		content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover">
+	<meta name=apple-mobile-web-app-capable content=yes>
+	<meta name=apple-mobile-web-app-status-bar-style content=black>
+	<title>dev.fernhomberg.streamdeck.homematic Property Inspector</title>
+	<link rel="stylesheet" href="css/sdpi.css">
+</head>
 
-          <!--
+<body>
+	<div class="sdpi-wrapper">
+
+		<!-- DROP HTML-STUFF BELOW -->
+
+		<!--
             Here we just copied a couple of elements from the PISamples example, which contains
             a huge collection pre-made HTML-elements for you to use.
             Important here is (if you plan to communicate from the Property Inspector to the plugin without
@@ -22,30 +25,48 @@
             the control.
           -->
 
-            <div class="sdpi-item">
-                <div class="sdpi-item-label">Name</div>
-                <input id="mynameinput" class="sdpi-item-value" type="text" value="" />
-             </div>
+		<div class="sdpi-item">
+			<div class="sdpi-item-label">Name</div>
+			<input id="mynameinput" class="sdpi-item-value" type="text" value="" />
+		</div>
 
-            <div type="textarea" class="sdpi-item">
-                <div class="sdpi-item-label up20" data-localize="Message">Message</div>
-                <div class="sdpi-item-value textarea">
-                  <textarea type="textarea" maxlength="50" id="mymessage" class="three-lines"></textarea>
-                  <label for="mymessage">0/50</label>
-                </div>
-              </div>
+		<div type="textarea" class="sdpi-item">
+			<div class="sdpi-item-label up20" data-localize="Message">Message</div>
+			<div class="sdpi-item-value textarea">
+				<textarea type="textarea" maxlength="50" id="mymessage" class="three-lines"></textarea>
+				<label for="mymessage">0/50</label>
+			</div>
+		</div>
 
-              <div class="sdpi-item">
-                <div class="sdpi-item-label">Button</div>
-                <button class="sdpi-item-value" id="clickme" value="Click Me" data-localize="Click me">Click Me</button>
-              </div>
+		<div class="sdpi-item" id="select_single">
+			<div class="sdpi-item-label">Select</div>
+			<select class="sdpi-item-value select">
+				<optgroup label="Women">
+					<option value="janedoe@example.com">Jane Doe</option>
+					<option value="tinatank@example.com">Some Girl</option>
+					<option value="yoko@example.com">Yoko Hama</option>
+				</optgroup>
+				<optgroup label="Men">
+					<option value="johndoe@example.com">John Doe</option>
+					<option value="tiptronic@example.com">Some Man</option>
+					<option value="kingofprawns@example.com">Another Chap</option>
+				</optgroup>
+
+			</select>
+		</div>
+
+		<div class="sdpi-item">
+			<div class="sdpi-item-label">Button</div>
+			<button class="sdpi-item-value" id="clickme" value="Click Me" data-localize="Click me">Click Me</button>
+		</div>
 
 
-              <!-- END OF SDPI-WRAPPER -->
+		<!-- END OF SDPI-WRAPPER -->
 
-        </div>
+	</div>
 
-        <div class="sdpi-info-label hidden" style="top: -1000;" value=""></div>
-        <script src="../relay.js"></script>
-    </body>
-    </html>
+	<div class="sdpi-info-label hidden" style="top: -1000;" value=""></div>
+	<script src="../relay.js"></script>
+</body>
+
+</html>

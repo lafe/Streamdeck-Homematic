@@ -43,7 +43,7 @@ function buildTypeScript() {
 }
 
 function copyHtml() {
-    return src(["src/**/*.html", "src/**/*.css"])
+    return src(["src/**/*.html", "src/**/*.css", "src/**/*.svg"])
         .pipe(dest(rootDistFolder));
 }
 
@@ -86,7 +86,7 @@ exports.default = build;
 exports.lint = lint;
 exports.watch = () => {
     watch("src/**/*.ts", series(build, copyToAppData));
-    watch(["src/**/*.html", "src/**/*.css"], series(build, copyToAppData));
+    watch(["src/**/*.html", "src/**/*.css", "src/**/*.svg"], series(build, copyToAppData));
     watch(["./manifest.json", "./package.json"], series(build, copyToAppData));
     watch("assets/**/*.png", series(build, copyToAppData));
 };
