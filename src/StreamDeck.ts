@@ -1,5 +1,8 @@
+import { debugLog } from "./common/debugLog";
 import { getWebSocketError } from "./common/getWebSocketError";
+import { parseJson } from "./common/parseJson";
 import "./extensions/WebSocketExtensions";
+import { BaseMessage } from "./message/BaseMessage";
 
 export class StreamDeck {
     private static instance: StreamDeck;
@@ -10,12 +13,14 @@ export class StreamDeck {
         return StreamDeck.instance;
     }
 
-    public inPort?: string;
-    public inUUID?: string;
-    public inMessageType?: string;
-    public inApplicationInfo?: string;
-    public inActionInfo?: string;
-    private websocket?: WebSocket;
+    public incomingMessage?: (instance: StreamDeck, message: BaseMessage) => void = undefined;
+
+    protected inPort?: string;
+    protected inUUID?: string;
+    protected inMessageType?: string;
+    protected inApplicationInfo?: string;
+    protected inActionInfo?: string;
+    protected websocket?: WebSocket;
 
     protected showVars(): void {
         debugLog("---- showVars");
@@ -35,7 +40,7 @@ export class StreamDeck {
         this.inActionInfo = inActionInfo;
 
         /** Debug variables */
-        if (debug) {
+        if (window.debug) {
             this.showVars();
         }
 
@@ -54,74 +59,59 @@ export class StreamDeck {
 
         this.websocket = new WebSocket("ws://127.0.0.1:" + inPort); //localhost
 
-        this.websocket.onopen = () => {
-            const json = {
-                event: inMessageType,
-                uuid: inUUID
-            };
+        this.websocket.onopen = () => this.websocketOnOpen();
+        this.websocket.onerror = (evt) => this.websocketOnError(evt);
+        this.websocket.onclose = (evt) => this.websocketOnClose(evt);
+        this.websocket.onmessage = (evt) => this.websocketOnMessageReceived(evt);
+    }
 
-            console.log("***************", inMessageType + "  websocket:onopen", inUUID, json);
-
-            if (this.websocket == null) {
-                return;
-            }
-
-            this.websocket.sendJSON(json);
-            // $SD.uuid = inUUID;
-            // $SD.actionInfo = inActionInfo;
-            // $SD.applicationInfo = inApplicationInfo;
-            // $SD.messageType = inMessageType;
-            // $SD.connection = websocket;
-
-            // instance.emit('connected', {
-            //     connection: websocket,
-            //     port: inPort,
-            //     uuid: inUUID,
-            //     actionInfo: inActionInfo,
-            //     applicationInfo: inApplicationInfo,
-            //     messageType: inMessageType
-            // });
+    protected websocketOnOpen(): void {
+        const json = {
+            event: this.inMessageType,
+            uuid: this.inUUID
         };
 
-        this.websocket.onerror = (evt) => {
-            console.warn("WEBOCKET ERROR", evt);
-        };
+        console.log(`[STREAMDECK] Opened WebSocket: ${this.inMessageType}`, this.inUUID, json);
 
-        this.websocket.onclose = (evt) => {
-            // Websocket is closed
-            const reason = getWebSocketError(evt);
-            console.warn("[STREAMDECK]***** WEBOCKET CLOSED **** reason:", reason);
-        };
+        if (this.websocket == null) {
+            return;
+        }
 
-        this.websocket.onmessage = (evt) => {
-            console.log("New message", evt);
-            // const jsonObj = Utils.parseJson(evt.data);
-            // let m;
+        this.sendJson(json);
+    }
 
-            // // console.log('[STREAMDECK] websocket.onmessage ... ', jsonObj.event, jsonObj);
+    protected websocketOnError(evt: Event): void {
+        console.warn("[STREAMDECK] WEBOCKET ERROR", evt);
+    }
+    
+    protected websocketOnClose(evt: CloseEvent): void {
+        const reason = getWebSocketError(evt);
+        console.warn(`[STREAMDECK] WEBOCKET CLOSED. Reason: ${reason}`);
+    }
 
-            // if (!jsonObj.hasOwnProperty("action")) {
-            //     m = jsonObj.event;
-            //     // console.log('%c%s', 'color: white; background: red; font-size: 12px;', '[common.js]onmessage:', m);
-            // } else {
-            //     switch (inMessageType) {
-            //         case "registerPlugin":
-            //             m = jsonObj["action"] + "." + jsonObj["event"];
-            //             break;
-            //         case "registerPropertyInspector":
-            //             m = "sendToPropertyInspector";
-            //             break;
-            //         default:
-            //             console.log(
-            //                 "%c%s",
-            //                 "color: white; background: red; font-size: 12px;",
-            //                 "[STREAMDECK] websocket.onmessage +++++++++  PROBLEM ++++++++"
-            //             );
-            //             console.warn("UNREGISTERED MESSAGETYPE:", inMessageType);
-            //     }
-            // }
+    protected websocketOnMessageReceived(evt: MessageEvent): void {
+        const payloadMessage = parseJson<BaseMessage>(evt.data);
 
-            // if (m && m !== "") events.emit(m, jsonObj);
-        };
+        if (payloadMessage == null) {
+            console.log("[STREAMDECK] Payload of received message is null");
+            return;
+        }
+
+        console.log(`[STREAMDECK] Received message ${payloadMessage.event}`, evt, payloadMessage);
+        if(this.incomingMessage == null){
+            console.warn("[STREAMDECK] Cannot process message, because handler is empty");
+            return;
+        }
+        this.incomingMessage(this, payloadMessage);
+    }
+
+    public sendJson(data: unknown): void {
+        if (this.websocket == null) {
+            console.error("[STREAMDECK] Cannot send paylod via websocket, because the websocket is null.", data);
+            return;
+        }
+        const payload = JSON.stringify(data);
+        console.info("[STREAMDECK] Sending data to Streamdeck", payload);
+        this.websocket.send(payload);
     }
 }
