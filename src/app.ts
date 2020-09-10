@@ -1,4 +1,4 @@
-import { StreamDeck } from "./StreamDeck";
+import { StreamDeck } from "./common/StreamDeck";
 
 declare global {
     interface Window {

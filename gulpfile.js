@@ -34,8 +34,8 @@ function lint() {
 
 function buildTypeScript() {
     return src("./src/app.ts")
-        .pipe(webpack(require("./webpack.config.js"), compiler, (err, stats)=> {
-            if(err != null){
+        .pipe(webpack(require("./webpack.config.js"), compiler, (err, stats) => {
+            if (err != null) {
                 log.error(`An error occured during the webpack task: ${err.message}`, err);
             }
         }))
@@ -43,7 +43,7 @@ function buildTypeScript() {
 }
 
 function copyHtml() {
-    return src("src/**/*.html")
+    return src(["src/**/*.html", "src/**/*.css"])
         .pipe(dest(rootDistFolder));
 }
 
@@ -86,7 +86,7 @@ exports.default = build;
 exports.lint = lint;
 exports.watch = () => {
     watch("src/**/*.ts", series(build, copyToAppData));
-    watch("src/**/*.html", series(build, copyToAppData));
+    watch(["src/**/*.html", "src/**/*.css"], series(build, copyToAppData));
     watch(["./manifest.json", "./package.json"], series(build, copyToAppData));
     watch("assets/**/*.png", series(build, copyToAppData));
 };

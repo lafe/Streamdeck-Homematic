@@ -3,19 +3,15 @@
     "Actions": [
         {
 			"Icon": "assets/PluginLogo",
-			"Name": "On / Off",
+			"Name": "Relay On / Off",
 			"States": [
 				{
-                    "Name": "On",
-                    "Image": "assets/PluginLogo"
-				},
-				{
-                    "Name": "Off",
                     "Image": "assets/PluginLogo"
 				}
 			],
-			"Tooltip": "Switch the light on or off",
-			"UUID": "dev.fernhomberg.streamdeck.homematic.lights-on-off"
+			"Tooltip": "Switch a relay on or off",
+            "UUID": "dev.fernhomberg.streamdeck.homematic.relay",
+            "PropertyInspectorPath": "propertyInspector/relay.html"
 		}
     ],
     

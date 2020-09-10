@@ -1,8 +1,7 @@
-import { debugLog } from "./common/debugLog";
-import { getWebSocketError } from "./common/getWebSocketError";
-import { parseJson } from "./common/parseJson";
-import "./extensions/WebSocketExtensions";
-import { BaseMessage } from "./message/BaseMessage";
+import { BaseMessage } from "../message/BaseMessage";
+import { debugLog } from "./debugLog";
+import { getWebSocketError } from "./getWebSocketError";
+import { parseJson } from "./parseJson";
 
 export class StreamDeck {
     private static instance: StreamDeck;

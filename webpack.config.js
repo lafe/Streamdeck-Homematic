@@ -8,7 +8,10 @@ const rootDistFolder = `dist/${appName}`;
 
 module.exports = {
   mode: "development",
-  entry: "./src/app.ts",
+  entry: {
+    app: "./src/app.ts",
+    relay: "./src/propertyInspector/relay.ts"
+  },
   devtool: "inline-source-map",
   module: {
     rules: [
@@ -23,7 +26,7 @@ module.exports = {
     extensions: [ ".tsx", ".ts", ".js" ],
   },
   output: {
-    filename: "bundle.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, rootDistFolder),
   }
 };
