@@ -1,10 +1,13 @@
 import { StreamDeck } from "./common/StreamDeck";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare global {
     interface Window {
         $localizedStrings: unknown;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         REMOTESETTINGS: any;
         debug: boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         MIMAGECACHE: any;
         connectElgatoStreamDeckSocket: (inPort: string, inUUID: string, inMessageType: string, inApplicationInfo: string, inActionInfo: string) => void;
         connectSocket: (inPort: string, inUUID: string, inMessageType: string, inApplicationInfo: string, inActionInfo: string) => void;
