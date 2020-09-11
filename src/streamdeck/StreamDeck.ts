@@ -1,8 +1,8 @@
+import { debugLog } from "../common/debugLog";
+import { getWebSocketError } from "../common/getWebSocketError";
+import { getLogger, Logger } from "../common/Logger";
+import { parseJson } from "../common/parseJson";
 import { BaseMessage } from "../message/BaseMessage";
-import { debugLog } from "./debugLog";
-import { getWebSocketError } from "./getWebSocketError";
-import { Logger } from "./Logger";
-import { parseJson } from "./parseJson";
 
 export class StreamDeck {
     private static instance: StreamDeck;
@@ -25,7 +25,7 @@ export class StreamDeck {
     protected Logger: Logger;
 
     constructor() {
-        this.Logger = new Logger("StreamDeck");
+        this.Logger = getLogger("StreamDeck");
     }
 
     protected showVars(): void {

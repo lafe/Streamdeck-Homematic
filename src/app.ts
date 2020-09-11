@@ -1,4 +1,4 @@
-import { StreamDeck } from "./common/StreamDeck";
+import { StreamDeck } from "./streamdeck/StreamDeck";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare global {
