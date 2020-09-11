@@ -7,7 +7,7 @@ export interface TextBoxProps {
     className?: string;
     label?: string;
     defaultValue?: string;
-    placeHolder?: string;
+    placeholder?: string;
 
     onChange?: (newValue?: string) => void;
 }
@@ -30,6 +30,7 @@ export function TextBox(props: React.PropsWithChildren<TextBoxProps>) {
             <input className="sdpi-item-value"
                 type="text" 
                 value={props.defaultValue}
+                placeholder={props.placeholder}
                 onInput={(ev) => onChange(ev.currentTarget.value)} />
         </ControlWrapper>
     );
