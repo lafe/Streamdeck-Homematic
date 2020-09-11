@@ -1,3 +1,5 @@
+import { Dictionary } from "../data/Dictionary";
+
 export class Logger {
     private identifier: string;
     constructor(identifier: string) {
@@ -16,4 +18,14 @@ export class Logger {
     public error(message: string, ...data: unknown[]): void {
         console.error(`[${this.identifier}] ${message}`, ...data);
     }
+}
+
+const LoggerDictionary: Dictionary<Logger> = {};
+
+export function getLogger(name: string): Logger {
+    const identifier = name.toUpperCase();
+    if (LoggerDictionary[identifier] == null) {
+        LoggerDictionary[identifier] = new Logger(identifier);
+    }
+    return LoggerDictionary[identifier];
 }

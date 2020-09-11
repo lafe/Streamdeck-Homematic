@@ -1,5 +1,7 @@
-import { Logger } from "../common/Logger";
-import { StreamDeck } from "../common/StreamDeck";
+import React from "react";
+import ReactDOM from "react-dom";
+import { StreamDeck } from "../streamdeck/StreamDeck";
+import { RelayComponent } from "./RelayComponent";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare global {
@@ -29,28 +31,11 @@ window.connectElgatoStreamDeckSocket = (inPort: string, inUUID: string, inMessag
 /* legacy support */
 window.connectSocket = (inPort: string, inUUID: string, inMessageType: string, inApplicationInfo: string, inActionInfo: string) => connectElgatoStreamDeckSocket(inPort, inUUID, inMessageType, inApplicationInfo, inActionInfo);
 
-class RelayController {
-    protected Logger: Logger;
-
-    protected ipTextBox?: HTMLInputElement;
-
-    constructor() {
-        this.Logger = new Logger("RelayController");
-    }
-
-    public init() {
-        this.Logger.log("Initializing Relay Controller");
-
-        this.ipTextBox = document.getElementById("txtIp") as HTMLInputElement;
-        this.ipTextBox.oninput = (ev) => this.onIpChange((ev.target as HTMLInputElement)?.value);
-    }
-
-    protected async onIpChange(newIp: string): Promise<void>{
-        this.Logger.log(`Handling new IP ${newIp}`);
-    }
-}
-
 (() => {
-    const relayController = new RelayController();
-    document.addEventListener("DOMContentLoaded", () => relayController.init());
+    document.addEventListener("DOMContentLoaded", () => {
+        ReactDOM.render(
+            <RelayComponent />,
+            document.getElementById("container")
+        );
+    });
 })();
