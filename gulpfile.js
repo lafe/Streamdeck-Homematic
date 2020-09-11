@@ -26,7 +26,7 @@ function clean() {
 }
 
 function lint() {
-    return src(["src/**/*.ts"])
+    return src(["src/**/*.ts", "src/**/*.tsx"])
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
@@ -85,7 +85,7 @@ const build = parallel(
 exports.default = build;
 exports.lint = lint;
 exports.watch = () => {
-    watch("src/**/*.ts", series(build, copyToAppData));
+    watch(["src/**/*.ts", "src/**/*.tsx"], series(build, copyToAppData));
     watch(["src/**/*.html", "src/**/*.css", "src/**/*.svg"], series(build, copyToAppData));
     watch(["./manifest.json", "./package.json"], series(build, copyToAppData));
     watch("assets/**/*.png", series(build, copyToAppData));
