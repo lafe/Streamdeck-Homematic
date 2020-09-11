@@ -12,7 +12,7 @@ module.exports = {
     app: "./src/app.ts",
     relay: "./src/propertyInspector/relay.tsx"
   },
-  devtool: "source-map",
+  devtool: "inline-source-map",
   module: {
     rules: [{
         test: /\.tsx?$/,
