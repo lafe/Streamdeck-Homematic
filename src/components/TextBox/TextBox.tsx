@@ -29,7 +29,7 @@ export function TextBox(props: React.PropsWithChildren<TextBoxProps>) {
             <Label>{props.label}</Label>
             <input className="sdpi-item-value"
                 type="text" 
-                value={props.defaultValue}
+                defaultValue={props.defaultValue}
                 placeholder={props.placeholder}
                 onInput={(ev) => onChange(ev.currentTarget.value)} />
         </ControlWrapper>
