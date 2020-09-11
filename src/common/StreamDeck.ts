@@ -1,6 +1,7 @@
 import { BaseMessage } from "../message/BaseMessage";
 import { debugLog } from "./debugLog";
 import { getWebSocketError } from "./getWebSocketError";
+import { Logger } from "./Logger";
 import { parseJson } from "./parseJson";
 
 export class StreamDeck {
@@ -20,6 +21,12 @@ export class StreamDeck {
     protected inApplicationInfo?: string;
     protected inActionInfo?: string;
     protected websocket?: WebSocket;
+
+    protected Logger: Logger;
+
+    constructor() {
+        this.Logger = new Logger("StreamDeck");
+    }
 
     protected showVars(): void {
         debugLog("---- showVars");
@@ -70,7 +77,7 @@ export class StreamDeck {
             uuid: this.inUUID
         };
 
-        console.log(`[STREAMDECK] Opened WebSocket: ${this.inMessageType}`, this.inUUID, json);
+        this.Logger.log(`Opened WebSocket: ${this.inMessageType}`, this.inUUID, json);
 
         if (this.websocket == null) {
             return;
@@ -80,25 +87,25 @@ export class StreamDeck {
     }
 
     protected websocketOnError(evt: Event): void {
-        console.warn("[STREAMDECK] WEBOCKET ERROR", evt);
+        this.Logger.warn("WEBOCKET ERROR", evt);
     }
     
     protected websocketOnClose(evt: CloseEvent): void {
         const reason = getWebSocketError(evt);
-        console.warn(`[STREAMDECK] WEBOCKET CLOSED. Reason: ${reason}`);
+        this.Logger.warn(`WEBOCKET CLOSED. Reason: ${reason}`);
     }
 
     protected websocketOnMessageReceived(evt: MessageEvent): void {
         const payloadMessage = parseJson<BaseMessage>(evt.data);
 
         if (payloadMessage == null) {
-            console.log("[STREAMDECK] Payload of received message is null");
+            this.Logger.log("Payload of received message is null");
             return;
         }
 
-        console.log(`[STREAMDECK] Received message ${payloadMessage.event}`, evt, payloadMessage);
+        this.Logger.log(`Received message ${payloadMessage.event}`, evt, payloadMessage);
         if(this.incomingMessage == null){
-            console.warn("[STREAMDECK] Cannot process message, because handler is empty");
+            this.Logger.warn("Cannot process message, because handler is empty");
             return;
         }
         this.incomingMessage(this, payloadMessage);
@@ -106,11 +113,11 @@ export class StreamDeck {
 
     public sendJson(data: unknown): void {
         if (this.websocket == null) {
-            console.error("[STREAMDECK] Cannot send paylod via websocket, because the websocket is null.", data);
+            this.Logger.error("Cannot send paylod via websocket, because the websocket is null.", data);
             return;
         }
         const payload = JSON.stringify(data);
-        console.info("[STREAMDECK] Sending data to Streamdeck", payload);
+        this.Logger.info("Sending data to Streamdeck", payload);
         this.websocket.send(payload);
     }
 }
