@@ -10,7 +10,7 @@ module.exports = {
   mode: "development",
   entry: {
     app: "./src/app.ts",
-    relay: "./src/propertyInspector/relay.tsx"
+    relay: "./src/propertyInspector/Relay/relay.tsx"
   },
   devtool: "inline-source-map",
   module: {

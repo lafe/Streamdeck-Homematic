@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { getLogger } from "../common/Logger";
-import { DropDown, DropDownOption } from "../components/DropDown/DropDown";
-import { PropertyInspectorContainer } from "../components/PropertyInspectorContainer/PropertyInspectorContainer";
-import { Spinner } from "../components/Spinner/Spinner";
-import { TextBox } from "../components/TextBox/TextBox";
-import { Device } from "../data/Device";
-import { RelaySettings } from "../data/settings/RelaySettings";
-import { DeviceType } from "../homematic/DeviceType";
-import { loadDevices } from "../homematic/loadDevices";
-import { useStreamDeck } from "../streamdeck/React/useStreamDeck";
-import { useStreamdeckConnected } from "../streamdeck/React/useStreamdeckConnected";
+import { getLogger } from "../../common/Logger";
+import { DropDown, DropDownOption } from "../../components/DropDown/DropDown";
+import { PropertyInspectorContainer } from "../../components/PropertyInspectorContainer/PropertyInspectorContainer";
+import { Spinner } from "../../components/Spinner/Spinner";
+import { TextBox } from "../../components/TextBox/TextBox";
+import { Device } from "../../data/Device";
+import { RelaySettings } from "../../data/settings/RelaySettings";
+import { DeviceType } from "../../homematic/DeviceType";
+import { loadDevices } from "../../homematic/loadDevices";
+import { useStreamDeck } from "../../streamdeck/React/useStreamDeck";
+import { useStreamdeckConnected } from "../../streamdeck/React/useStreamdeckConnected";
 
 export function RelayComponent() {
     const [isDevicesLoading, setIsDevicesLoading] = useState(false);

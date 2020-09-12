@@ -11,7 +11,7 @@
 			],
 			"Tooltip": "Switch a relay on or off",
             "UUID": "dev.fernhomberg.streamdeck.homematic.relay",
-            "PropertyInspectorPath": "propertyInspector/relay.html"
+            "PropertyInspectorPath": "propertyInspector/Relay/relay.html"
 		}
     ],
     

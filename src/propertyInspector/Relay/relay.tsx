@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { StreamDeck } from "../streamdeck/StreamDeck";
+import { StreamDeck } from "../../streamdeck/StreamDeck";
 import { RelayComponent } from "./RelayComponent";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
