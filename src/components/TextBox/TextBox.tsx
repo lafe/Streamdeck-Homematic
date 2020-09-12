@@ -8,6 +8,7 @@ export interface TextBoxProps {
     label?: string;
     defaultValue?: string;
     placeholder?: string;
+    disabled?: boolean;
 
     onChange?: (newValue?: string) => void;
 }
@@ -31,6 +32,7 @@ export function TextBox(props: React.PropsWithChildren<TextBoxProps>) {
                 type="text" 
                 defaultValue={props.defaultValue}
                 placeholder={props.placeholder}
+                disabled={props.disabled}
                 onInput={(ev) => onChange(ev.currentTarget.value)} />
         </ControlWrapper>
     );
