@@ -1,5 +1,5 @@
-export interface RelaySettings {
-    address: string;
-    selectedDeviceId?: string;
-    selectedDeviceName?: string;
+import { BaseSettings } from "./BaseSettings";
+
+export interface RelaySettings extends BaseSettings {
+    
 }
