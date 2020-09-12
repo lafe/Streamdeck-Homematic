@@ -1,4 +1,5 @@
 import { StreamDeck } from "./streamdeck/StreamDeck";
+import { StreamDeckHandler } from "./streamdeck/StreamDeckHandler";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare global {
@@ -34,8 +35,9 @@ function connectElgatoStreamDeckSocket(inPort: string, inUUID: string, inMessage
     console.log("debug log", debugLog);
     console.log("MIMAGECACHE", window.MIMAGECACHE);
     // eslint-disable-next-line prefer-rest-params
-    StreamDeck.getInstance()
-        .connect(inPort, inUUID, inMessageType, inApplicationInfo, inActionInfo);
+    const streamdeck = StreamDeck.getInstance();
+    streamdeck.connect(inPort, inUUID, inMessageType, inApplicationInfo, inActionInfo);
+    new StreamDeckHandler(streamdeck);
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
