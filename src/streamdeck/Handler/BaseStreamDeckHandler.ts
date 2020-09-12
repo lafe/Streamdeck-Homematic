@@ -35,7 +35,7 @@ export abstract class BaseStreamDeckHandler<TSettings, TInstanceHandler extends 
     /**
      * Creates a new instance of the application
      */
-    public abstract createInstanceHandler(device: string | undefined, context: string | undefined, initialSettings: TSettings | undefined): TInstanceHandler;
+    public abstract createInstanceHandler(streamdeck: StreamDeck, device: string | undefined, context: string | undefined, initialSettings: TSettings | undefined): TInstanceHandler;
 
     /**
      * Receives the raw message from StreamDeck. This method is triggered before any other, 
@@ -95,7 +95,7 @@ export abstract class BaseStreamDeckHandler<TSettings, TInstanceHandler extends 
      * @param message The raw message that has been sent
      */
     public onWillAppear(instance: StreamDeck, message: WillAppearMessage<TSettings>) {
-        const newInstance = this.createInstanceHandler(message.device, message.context, message.payload.settings);
+        const newInstance = this.createInstanceHandler(instance, message.device, message.context, message.payload.settings);
         this.logger.log(`Created new instance for device "${message.device}" and context "${message.context}"`);
         this.instances.push(newInstance);
         newInstance.onHandleRawMessage(instance, message);

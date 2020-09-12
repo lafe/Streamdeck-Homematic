@@ -8,6 +8,11 @@ import { ReceiveSettingsMessage } from "../message/ReceiveSettingsMessage";
 import { RegisterPropertyInspectorMessage } from "../message/RegisterPropertyInspectorMessage";
 
 export type StreamDeckIncomingMessageHandler = (instance: StreamDeck, message: BaseMessage) => void;
+export enum ImageTarget {
+    SoftwareAndHardware = 0,
+    HardwareOnly = 1,
+    SoftwareOnly = 2
+}
 
 export class StreamDeck {
     private static instance: StreamDeck;
@@ -136,9 +141,9 @@ export class StreamDeck {
         }
     }
 
-    private buildMessage<TPayload>(type: "setSettings" | "getSettings" | "logMessage", payload?: TPayload) {
+    private buildMessage<TPayload>(type: "setSettings" | "getSettings" | "logMessage" | "setImage", payload?: TPayload, context?: string) {
         const message: { event: string, context?: string, payload?: TPayload } = { event: type };
-        message.context = this.inUUID;
+        message.context = context ?? this.inUUID;
         if (payload != null) {
             message.payload = payload;
         }
@@ -169,24 +174,31 @@ export class StreamDeck {
         });
         return promise;
     }
+
     public setSettings<TSettings>(settings: TSettings): void {
         this.Logger.log("Setting settings");
         const message = this.buildMessage("setSettings", settings);
         this.sendJson(message);
     }
 
-    protected sendJson(data: unknown): void {
-        if (this.websocket == null) {
-            this.Logger.error("Cannot send paylod via websocket, because the websocket is null.", data);
-            return;
-        }
-        if (data == null) {
-            this.Logger.warn("Cannot send empty payload to Streamdeck");
-            return;
-        }
+    public setImage(context: string, image: string, target?: ImageTarget, state?: number): void {
+        this.Logger.log("Setting image");
+        const message = this.buildMessage("setImage", { image, target: target ?? ImageTarget.SoftwareAndHardware, state: state ?? 0 }, context);
+        this.sendJson(message);
+    }
 
-        const payload = JSON.stringify(data);
-        this.Logger.info("Sending data to Streamdeck", payload);
-        this.websocket.send(payload);
+    protected sendJson(data: unknown): void {
+    if(this.websocket == null) {
+    this.Logger.error("Cannot send paylod via websocket, because the websocket is null.", data);
+    return;
+}
+if (data == null) {
+    this.Logger.warn("Cannot send empty payload to Streamdeck");
+    return;
+}
+
+const payload = JSON.stringify(data);
+this.Logger.info("Sending data to Streamdeck", payload);
+this.websocket.send(payload);
     }
 }

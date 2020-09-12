@@ -21,7 +21,7 @@ export async function loadState(homematicAddress: string, deviceId: string) {
     }
     const textResult = await rawResult.text();
 
-    logger.log("Converting result in XML", textResult);
+    // logger.log("Converting result in XML", textResult);
     const parser = new DOMParser();
     const result = parser.parseFromString(textResult, "text/xml") as XMLDocument;
     logger.log("Retrieved XML result", result);

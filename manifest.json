@@ -12,6 +12,18 @@
 			"Tooltip": "Switch a relay on or off",
             "UUID": "dev.fernhomberg.streamdeck.homematic.relay",
             "PropertyInspectorPath": "propertyInspector/Relay/relay.html"
+        },
+        {
+			"Icon": "assets/PluginLogo",
+			"Name": "Climate",
+			"States": [
+				{
+                    "Image": "assets/PluginLogo"
+				}
+			],
+			"Tooltip": "Show temperature/humidty",
+            "UUID": "dev.fernhomberg.streamdeck.homematic.climate",
+            "PropertyInspectorPath": "propertyInspector/Climate/climate.html"
 		}
     ],
     

@@ -10,14 +10,20 @@ export async function loadDevices(homematicAddress: string): Promise<Device[]> {
     const logger = getLogger("LoadDevices");
     const url = buildUrl(homematicAddress, "devicelist");
     logger.log(`Loading device list from ${url}`);
-    const rawResult = await fetch(url);
+    let rawResult: Response;
+    try {
+        rawResult = await fetch(url);
+    } catch (e) {
+        logger.error(`An error occurred while trying to load the devices from HomeMatic with URL ${homematicAddress}`, e);
+        return [];
+    }
     if (!rawResult.ok) {
-        logger.error(`An error occurred whily trying to load the devices from HomeMatic CCU ${homematicAddress}: ${rawResult.status} - ${rawResult.statusText}`);
+        logger.error(`An error occurred while trying to load the devices from HomeMatic CCU ${homematicAddress}: ${rawResult.status} - ${rawResult.statusText}`);
         return [];
     }
     const textResult = await rawResult.text();
 
-    logger.log("Converting result in XML", textResult);
+    // logger.log("Converting result in XML", textResult);
     const parser = new DOMParser();
     const result = parser.parseFromString(textResult, "text/xml") as XMLDocument;
     logger.log("Retrieved XML result", result);
