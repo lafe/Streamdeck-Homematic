@@ -36,7 +36,7 @@ export function RelayComponent() {
         }, 200);
 
         return () => { window.clearInterval(timerId); };
-    }, [streamdeckConnected]);
+    }, [streamdeckConnected, streamdeck.isConnected, logger]);
 
     useEffect(() => {
         let didCancel = false;
@@ -51,7 +51,7 @@ export function RelayComponent() {
         }
         fetchDevices();
         return () => { didCancel = true; };
-    }, [settings?.address]);
+    }, [settings?.address, logger]);
 
     useEffect(() => {
         let didCancel = false;
@@ -80,7 +80,7 @@ export function RelayComponent() {
         return () => {
             didCancel = true;
         };
-    }, [streamdeckConnected]);
+    }, [streamdeckConnected, logger, settings, streamdeck]);
 
     const onIpChange = async (newAddress?: string) => {
         logger.log(`Handling new address ${newAddress}`);
