@@ -1,3 +1,5 @@
+import { DataPoint } from "./DataPoint";
+
 export interface Channel {
     name: string;
     type: number;
@@ -7,4 +9,5 @@ export interface Channel {
     parentDeviceId:string;
     index:number;
     visible:boolean;
+    datapoints: DataPoint[];
 }
