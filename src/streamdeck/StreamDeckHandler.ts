@@ -20,13 +20,14 @@ import { TitleParametersDidChangeMessage } from "../message/TitleParametersDidCh
 import { WillAppearMessage } from "../message/WillAppearMessage";
 import { WillDisappearMessage } from "../message/WillDisappearMessage";
 import { BaseStreamDeckHandler } from "./Handler/BaseStreamDeckHandler";
-import { RelayHandler } from "./Handler/RelayHandler";
+import { BaseStreamDeckInstanceHandler } from "./Handler/BaseStreamDeckInstanceHandler";
+import { RelayHandler } from "./Handler/Relay/RelayHandler";
 import { StreamDeck } from "./StreamDeck";
 
 export class StreamDeckHandler {
     private streamdeck: StreamDeck;
     private messageHandlerId: string;
-    private messageHandlers: BaseStreamDeckHandler<unknown>[] = [];
+    private messageHandlers: BaseStreamDeckHandler<unknown, BaseStreamDeckInstanceHandler<unknown>>[] = [];
 
     private logger: Logger = getLogger("StreamDeckHandler");
 
@@ -45,7 +46,7 @@ export class StreamDeckHandler {
         }
     }
 
-    protected handleMessage(messageHandler: BaseStreamDeckHandler<unknown>, instance: StreamDeck, message: BaseMessage) {
+    protected handleMessage(messageHandler: BaseStreamDeckHandler<unknown, BaseStreamDeckInstanceHandler<unknown>>, instance: StreamDeck, message: BaseMessage) {
         messageHandler.onHandleRawMessage(instance, message);
 
         switch (message.event) {
@@ -102,16 +103,16 @@ export class StreamDeckHandler {
         }
     }
 
-    protected triggerEvent<TMessageType extends BaseMessage>(messageHandler: BaseStreamDeckHandler<unknown>, event: FunctionPropertyNames<BaseStreamDeckHandler<unknown>>, instance: StreamDeck, message: BaseMessage) {
+    protected triggerEvent<TMessageType extends BaseMessage>(messageHandler: BaseStreamDeckHandler<unknown, BaseStreamDeckInstanceHandler<unknown>>, event: FunctionPropertyNames<BaseStreamDeckHandler<unknown, BaseStreamDeckInstanceHandler<unknown>>>, instance: StreamDeck, message: BaseMessage) {
         const specificMessage = message as TMessageType;
         const actionMessage = message as BaseActionMessage;
-        if(actionMessage.action != null && actionMessage.action !== messageHandler.action){
+        if (actionMessage.action != null && actionMessage.action !== messageHandler.action) {
             this.logger.log(`Action of message (${actionMessage.action}) is not supported by handler for action "${messageHandler.action}"`);
             return;
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        messageHandler[event](instance, specificMessage as any);
+        messageHandler[event](instance as any, specificMessage as any);
     }
 }
 

@@ -70,15 +70,17 @@ function copyToAppData() {
 
 }
 
-const build = parallel(
+const build = series(
     clean,
-    series(
-        lint,
-        buildTypeScript
-    ),
-    copyHtml,
-    copyManifest,
-    copyAssets
+        parallel(
+        series(
+            lint,
+            buildTypeScript
+        ),
+        copyHtml,
+        copyManifest,
+        copyAssets
+    )
 );
 
 
