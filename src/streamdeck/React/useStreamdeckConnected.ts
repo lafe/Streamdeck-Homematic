@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getLogger } from "../common/Logger";
+import { getLogger } from "../../common/Logger";
 import { useStreamDeck } from "./useStreamDeck";
 
 export function useStreamdeckConnected() {
