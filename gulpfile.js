@@ -8,7 +8,6 @@ const {
     watch
 } = require("gulp");
 const jeditor = require("gulp-json-editor");
-const ts = require("gulp-typescript");
 const fs = require("fs");
 const log = require("fancy-log");
 const eslint = require("gulp-eslint");
