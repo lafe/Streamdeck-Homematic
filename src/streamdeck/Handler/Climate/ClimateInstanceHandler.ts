@@ -4,6 +4,7 @@ import { ClimateSettings } from "../../../data/settings/ClimateSettings";
 import { filterDataPoints } from "../../../homematic/filterDataPoints";
 import { loadState } from "../../../homematic/loadState";
 import { KeyDownMessage } from "../../../message/KeyDownMessage";
+import { ReceiveSettingsMessage } from "../../../message/ReceiveSettingsMessage";
 import { StreamDeck } from "../../StreamDeck";
 import { BaseStreamDeckInstanceHandler } from "../BaseStreamDeckInstanceHandler";
 
@@ -119,6 +120,18 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
         } else {
             this.mode = "TEMPERATURE";
         }
+
+        this.refresh();
+    }
+
+    /**
+     * Triggered when settings changed
+     * 
+     * @param instance The StreamDeck instance that sent this message
+     * @param message The raw message that has been sent
+     */
+    public onSettings(instance: StreamDeck, message: ReceiveSettingsMessage<ClimateSettings>) {
+        super.onSettings(instance, message);
 
         this.refresh();
     }

@@ -109,15 +109,20 @@ export abstract class BaseStreamDeckHandler<TSettings, TInstanceHandler extends 
      * @param message The raw message that has been sent
      */
     public onWillDisappear(instance: StreamDeck, message: WillDisappearMessage<TSettings>) {
+        this.logInstances();
         let position = -1;
+        this.logger.log(`Trying to delete instance for device ${message.device} and context ${message.context}`);
         do {
-            position = this.instances.findIndex(instance => !(instance.context === message.context && instance.device === message.device));
+            position = this.instances.findIndex(instance => instance.context === message.context && instance.device === message.device);
             if (position === -1) {
                 continue;
             }
-            this.instances[position].onWillDisappear(instance, message);
+            const instanceToBeDeleted = this.instances[position];
+            this.logger.info(`Instance for device ${instanceToBeDeleted.device} and context ${instanceToBeDeleted.context} at position ${position} will be deleted`);
+            instanceToBeDeleted.onWillDisappear(instance, message);
             this.instances.splice(position, 1);
         } while (position > -1);
+        this.logInstances();
     }
 
     public onTitleParametersDidChange(instance: StreamDeck, message: TitleParametersDidChangeMessage<TSettings>) {
@@ -173,6 +178,14 @@ export abstract class BaseStreamDeckHandler<TSettings, TInstanceHandler extends 
     protected sendToContextInstance(message: BaseActionMessage, handler: (instance: BaseStreamDeckInstanceHandler<TSettings>) => void) {
         const filteredInstances = this.instances.filter(instance => instance.context === message.context && instance.device === message.device);
         filteredInstances.forEach(instance => handler(instance));
+    }
+
+    protected logInstances() {
+        this.logger.log(`Currently ${this.instances.length} instance${(this.instances.length === 1 ? "" : "s")} are loaded`);
+        for (let i = 0; i < this.instances.length; i++) {
+            const instance = this.instances[i];
+            this.logger.log(` ${i}: Device: ${instance.device} Context: ${instance.context}`);
+        }
     }
 
 }
