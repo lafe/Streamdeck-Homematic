@@ -101,14 +101,11 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
             return;
         }
         drawContext.clearRect(0, 0, this.displayCanvas.width, this.displayCanvas.height);
-        drawContext.font = "bold 30px verdana, sans-serif ";
-        drawContext.textAlign = "start";
-        drawContext.textBaseline = "bottom";
+        drawContext.font = "bold 50px verdana, sans-serif ";
+        drawContext.textAlign = "center";
+        drawContext.textBaseline = "middle";
         drawContext.fillStyle = "#ffffff";
-        drawContext.fillText(value, 0, 144, 144);
-
-        drawContext.font = "50px serif";
-        drawContext.fillText("Hello world", 10, 10);
+        drawContext.fillText(value, this.displayCanvas.width / 2, this.displayCanvas.height / 2, this.displayCanvas.width - 50);
 
         this.streamdeck.setImage(this.context, this.displayCanvas.toDataURL());
     }
