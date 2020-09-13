@@ -19,7 +19,9 @@ The software is currently only tested with the "normal" 15 key [Stream Deck](htt
 The following HomeMatic devices are currently supported:
 
 - [HomeMatic Wireless Switch Actuator 1-channel, flush-mount](https://www.eq-3.com/products/homematic/detail/homematic-wireless-switch-actuator-1-channel-flush-mount.html) (HM-LC-Sw1-FM)
+  - Toggle Switch
 - HomeMatic Wireless Wall Thermostat (HM-CC-TC)
+  - Display temperature and humidity (pressing the button will switch between both)
 
 ## Development
 
