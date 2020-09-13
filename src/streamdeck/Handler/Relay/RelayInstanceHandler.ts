@@ -8,8 +8,8 @@ import { BaseStreamDeckInstanceHandler } from "../BaseStreamDeckInstanceHandler"
 export class RelayInstanceHandler extends BaseStreamDeckInstanceHandler<RelaySettings> {
     protected logger: Logger;
 
-    constructor(device: string | undefined, context: string | undefined, initialSettings: RelaySettings | undefined) {
-        super(device, context, initialSettings);
+    constructor(streamdeck: StreamDeck, device: string | undefined, context: string | undefined, initialSettings: RelaySettings | undefined) {
+        super(streamdeck, device, context, initialSettings);
 
         this.logger = getLogger(`RelayInstanceHandler-${device}-${context}`);
     }

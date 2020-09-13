@@ -26,11 +26,13 @@ import { StreamDeck } from "../StreamDeck";
 export abstract class BaseStreamDeckInstanceHandler<TSettings> {
     protected abstract logger: Logger;
 
+    public streamdeck: StreamDeck;
     public device?: string;
     public context?: string;
     public settings?: TSettings;
 
-    constructor(device: string | undefined, context: string | undefined, initialSettings: TSettings|undefined) {
+    constructor(streamdeck: StreamDeck, device: string | undefined, context: string | undefined, initialSettings: TSettings|undefined) {
+        this.streamdeck =streamdeck;
         this.device = device;
         this.context = context;
         this.settings = initialSettings;

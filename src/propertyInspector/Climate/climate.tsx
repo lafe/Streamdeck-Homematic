@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { getLogger } from "../../common/Logger";
 import { StreamDeck } from "../../streamdeck/StreamDeck";
-import { RelayComponent } from "./RelayComponent";
+import { ClimateComponent } from "./ClimateComponent";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare global {
@@ -23,7 +23,7 @@ declare global {
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function connectElgatoStreamDeckSocket(inPort: string, inUUID: string, inMessageType: string, inApplicationInfo: string, inActionInfo: string) {
-    const log = getLogger("Relay");
+    const log = getLogger("Climate");
     log.log("Connecting to Elgato Streamdeck");
     StreamDeck.getInstance()
         .connect(inPort, inUUID, inMessageType, inApplicationInfo, inActionInfo);
@@ -36,7 +36,7 @@ window.connectSocket = (inPort: string, inUUID: string, inMessageType: string, i
 (() => {
     document.addEventListener("DOMContentLoaded", () => {
         ReactDOM.render(
-            <RelayComponent />,
+            <ClimateComponent />,
             document.getElementById("container")
         );
     });

@@ -21,6 +21,7 @@ import { WillAppearMessage } from "../message/WillAppearMessage";
 import { WillDisappearMessage } from "../message/WillDisappearMessage";
 import { BaseStreamDeckHandler } from "./Handler/BaseStreamDeckHandler";
 import { BaseStreamDeckInstanceHandler } from "./Handler/BaseStreamDeckInstanceHandler";
+import { ClimateHandler } from "./Handler/Climate/ClimateHandler";
 import { RelayHandler } from "./Handler/Relay/RelayHandler";
 import { StreamDeck } from "./StreamDeck";
 
@@ -35,6 +36,7 @@ export class StreamDeckHandler {
         this.streamdeck = streamdeck;
 
         this.messageHandlers.push(new RelayHandler());
+        this.messageHandlers.push(new ClimateHandler());
 
         this.messageHandlerId = `StreamDeckHandler-${uuidv4()}`;
         this.streamdeck.registerHandler(this.messageHandlerId, (instance, message) => this.handleNewMessage(instance, message));
@@ -107,7 +109,7 @@ export class StreamDeckHandler {
         const specificMessage = message as TMessageType;
         const actionMessage = message as BaseActionMessage;
         if (actionMessage.action != null && actionMessage.action !== messageHandler.action) {
-            this.logger.log(`Action of message (${actionMessage.action}) is not supported by handler for action "${messageHandler.action}"`);
+            // this.logger.log(`Action of message (${actionMessage.action}) is not supported by handler for action "${messageHandler.action}"`);
             return;
         }
 
