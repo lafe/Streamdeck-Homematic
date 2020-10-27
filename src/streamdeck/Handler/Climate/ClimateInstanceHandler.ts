@@ -88,7 +88,7 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
             return;
         }
         if (this.context == null) {
-            this.logger.error("The context of the current button is unknown. Cannot rendr it.");
+            this.logger.error("The context of the current button is unknown. Cannot render it.");
             return;
         }
         let nummericValue = Number(modeData.value);
