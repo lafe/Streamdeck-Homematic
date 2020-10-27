@@ -11,7 +11,7 @@ import { BaseStreamDeckInstanceHandler } from "../BaseStreamDeckInstanceHandler"
 
 export class BlindsInstanceHandler extends BaseStreamDeckInstanceHandler<BlindsSettings> {
     protected logger: Logger;
-    private refreshInterval = 1000; //30000;
+    private refreshInterval = 30000;
     private timerHandle?: number;
     private displayCanvas!: HTMLCanvasElement;
 
