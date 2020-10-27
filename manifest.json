@@ -46,7 +46,7 @@
     "Description": "This plugin lets you control some Homematic devices from your Streamdeck",
     "Icon": "assets/PluginLogo",
     "URL": "https://github.com/lafe/Streamdeck-Homematic/",
-    "Version": "0.0.1",
+    "Version": "0.2.0",
     "OS": [
         {
             "Platform": "windows",
