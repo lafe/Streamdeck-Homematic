@@ -1,1 +1,1 @@
-export type DataPointType = "STATE"| "TEMPERATURE" | "HUMIDITY";
+export type DataPointType = "STATE"| "TEMPERATURE" | "HUMIDITY" | "LEVEL";

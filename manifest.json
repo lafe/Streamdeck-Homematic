@@ -24,6 +24,18 @@
 			"Tooltip": "Show temperature/humidty",
             "UUID": "dev.fernhomberg.streamdeck.homematic.climate",
             "PropertyInspectorPath": "propertyInspector/Climate/climate.html"
+		},
+        {
+			"Icon": "assets/PluginLogo",
+			"Name": "Blinds",
+			"States": [
+				{
+                    "Image": "assets/PluginLogo"
+				}
+			],
+			"Tooltip": "Control window blinds",
+            "UUID": "dev.fernhomberg.streamdeck.homematic.blinds",
+            "PropertyInspectorPath": "propertyInspector/Blinds/blinds.html"
 		}
     ],
     

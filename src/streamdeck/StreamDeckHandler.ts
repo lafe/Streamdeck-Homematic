@@ -21,6 +21,7 @@ import { WillAppearMessage } from "../message/WillAppearMessage";
 import { WillDisappearMessage } from "../message/WillDisappearMessage";
 import { BaseStreamDeckHandler } from "./Handler/BaseStreamDeckHandler";
 import { BaseStreamDeckInstanceHandler } from "./Handler/BaseStreamDeckInstanceHandler";
+import { BlindsHandler } from "./Handler/Blinds/BlindsHandler";
 import { ClimateHandler } from "./Handler/Climate/ClimateHandler";
 import { RelayHandler } from "./Handler/Relay/RelayHandler";
 import { StreamDeck } from "./StreamDeck";
@@ -37,6 +38,7 @@ export class StreamDeckHandler {
 
         this.messageHandlers.push(new RelayHandler());
         this.messageHandlers.push(new ClimateHandler());
+        this.messageHandlers.push(new BlindsHandler());
 
         this.messageHandlerId = `StreamDeckHandler-${uuidv4()}`;
         this.streamdeck.registerHandler(this.messageHandlerId, (instance, message) => this.handleNewMessage(instance, message));
