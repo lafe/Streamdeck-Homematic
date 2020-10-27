@@ -1,25 +1,24 @@
 import { getLogger, Logger } from "../../../common/Logger";
 import { DataPoint } from "../../../data/DataPoint";
-import { ClimateSettings } from "../../../data/settings/ClimateSettings";
+import { BlindsSettings } from "../../../data/settings/BlindsSettings";
 import { filterDataPoints } from "../../../homematic/filterDataPoints";
 import { loadState } from "../../../homematic/loadState";
+import { setBlindsHeight } from "../../../homematic/setBlindsHeight";
 import { KeyDownMessage } from "../../../message/KeyDownMessage";
 import { ReceiveSettingsMessage } from "../../../message/ReceiveSettingsMessage";
 import { StreamDeck } from "../../StreamDeck";
 import { BaseStreamDeckInstanceHandler } from "../BaseStreamDeckInstanceHandler";
 
-export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<ClimateSettings> {
+export class BlindsInstanceHandler extends BaseStreamDeckInstanceHandler<BlindsSettings> {
     protected logger: Logger;
-    private mode: "TEMPERATURE" | "HUMIDITY" = "TEMPERATURE";
-
     private refreshInterval = 30000;
     private timerHandle?: number;
     private displayCanvas!: HTMLCanvasElement;
 
-    constructor(streamdeck: StreamDeck, device: string | undefined, context: string | undefined, initialSettings: ClimateSettings | undefined) {
+    constructor(streamdeck: StreamDeck, device: string | undefined, context: string | undefined, initialSettings: BlindsSettings | undefined) {
         super(streamdeck, device, context, initialSettings);
 
-        this.logger = getLogger(`ClimateInstanceHandler-${device}-${context}`);
+        this.logger = getLogger(`BlindsInstanceHandler-${device}-${context}`);
         this.createCanvas();
         this.refresh();
     }
@@ -51,7 +50,7 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
                 return;
             }
             if (this.settings.selectedDeviceId == null) {
-                this.logger.error("No climate control device configured. Cannot refresh data from HomeMatic.");
+                this.logger.error("No blinds control device configured. Cannot refresh data from HomeMatic.");
                 return;
             }
 
@@ -60,13 +59,12 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
                 this.logger.warn(`Could not load state data for device ${this.settings.selectedDeviceId}`);
                 return;
             }
-            const data = filterDataPoints(device, ["TEMPERATURE", "HUMIDITY"]);
-            const modeData = data.filter(dataPoint => dataPoint.type === this.mode);
-            if (modeData.length === 0) {
-                this.logger.error(`No data points found for mode ${this.mode}`);
+            const data = filterDataPoints(device, ["LEVEL"]);
+            if (data.length === 0) {
+                this.logger.error("No data points found for the \"LEVEL\" value.");
                 return;
             }
-            this.renderButton(modeData[0]);
+            this.renderButton(data[0]);
 
         } catch (e) {
             this.logger.error("While handling the refresh, an error occurred", e);
@@ -82,7 +80,7 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
 
     }
 
-    protected renderButton(modeData: DataPoint) {
+    protected renderButton(data: DataPoint) {
         if (this.streamdeck == null) {
             this.logger.error("StreamDeck instance is empty. Cannot render button");
             return;
@@ -91,9 +89,9 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
             this.logger.error("The context of the current button is unknown. Cannot render it.");
             return;
         }
-        let nummericValue = Number(modeData.value);
-        nummericValue = Math.round(nummericValue * 10) / 10;
-        const value = `${nummericValue}${modeData.valueUnit}`;
+        let nummericValue = Number(data.value);
+        nummericValue = Math.round(nummericValue * 100);
+        const value = `${this.settings?.targetHeight}%`;
         this.logger.info(`Rendering new value of ${value}`);
 
         const drawContext = this.displayCanvas.getContext("2d");
@@ -105,23 +103,21 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
         drawContext.font = "bold 50px verdana, sans-serif ";
         drawContext.textAlign = "center";
         drawContext.textBaseline = "middle";
-        drawContext.fillStyle = "#ffffff";
+        if (nummericValue === this.settings?.targetHeight) {
+            drawContext.fillStyle = "#008000";
+        } else {
+            drawContext.fillStyle = "#ffffff";
+        }
         drawContext.fillText(value, this.displayCanvas.width / 2, this.displayCanvas.height / 2, this.displayCanvas.width - 50);
 
         this.streamdeck.setImage(this.context, this.displayCanvas.toDataURL());
     }
 
-    public onKeyDown(instance: StreamDeck, message: KeyDownMessage<ClimateSettings>) {
+    public onKeyDown(instance: StreamDeck, message: KeyDownMessage<BlindsSettings>) {
         const settings = message.payload.settings;
-        this.logger.info(`KeyDown for climate "${settings.selectedDeviceName}".`);
+        this.logger.info(`KeyDown for relay "${settings.selectedDeviceName}".`);
 
-        if (this.mode === "TEMPERATURE") {
-            this.mode = "HUMIDITY";
-        } else {
-            this.mode = "TEMPERATURE";
-        }
-
-        this.refresh();
+        setBlindsHeight(instance, this.settings);
     }
 
     /**
@@ -130,7 +126,7 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
      * @param instance The StreamDeck instance that sent this message
      * @param message The raw message that has been sent
      */
-    public onSettings(instance: StreamDeck, message: ReceiveSettingsMessage<ClimateSettings>) {
+    public onSettings(instance: StreamDeck, message: ReceiveSettingsMessage<BlindsSettings>) {
         super.onSettings(instance, message);
 
         this.refresh();

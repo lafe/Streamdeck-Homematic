@@ -11,7 +11,8 @@ module.exports = {
   entry: {
     app: "./src/app.ts",
     relay: "./src/propertyInspector/Relay/relay.tsx",
-    climate: "./src/propertyInspector/Climate/climate.tsx"
+    climate: "./src/propertyInspector/Climate/climate.tsx",
+    blinds: "./src/propertyInspector/Blinds/blinds.tsx"
   },
   devtool: "inline-source-map",
   module: {

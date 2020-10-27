@@ -3,21 +3,22 @@ import { getLogger } from "../../common/Logger";
 import { DropDown, DropDownOption } from "../../components/DropDown/DropDown";
 import { PropertyInspectorContainer } from "../../components/PropertyInspectorContainer/PropertyInspectorContainer";
 import { Spinner } from "../../components/Spinner/Spinner";
+import { NummericTextBox } from "../../components/TextBox/NummericTextBox";
 import { TextBox } from "../../components/TextBox/TextBox";
 import { Device } from "../../data/Device";
-import { ClimateSettings } from "../../data/settings/ClimateSettings";
+import { BlindsSettings } from "../../data/settings/BlindsSettings";
 import { DeviceType } from "../../homematic/DeviceType";
 import { loadDevices } from "../../homematic/loadDevices";
 import { useStreamDeck } from "../../streamdeck/React/useStreamDeck";
 import { useStreamdeckConnected } from "../../streamdeck/React/useStreamdeckConnected";
 
-export function ClimateComponent() {
+export function BlindsComponent() {
     const [isDevicesLoading, setIsDevicesLoading] = useState(false);
     const [devices, setDevices] = useState<Device[]>([]);
-    const [settings, setSettings] = useState<ClimateSettings | undefined>(undefined);
+    const [settings, setSettings] = useState<BlindsSettings | undefined>(undefined);
     const [isSettingsLoading, setIsSettingsLoading] = useState(false);
 
-    const logger = getLogger("ClimateComponent");
+    const logger = getLogger("BlindsComponent");
     const streamdeck = useStreamDeck();
     const streamdeckConnected = useStreamdeckConnected();
 
@@ -43,7 +44,7 @@ export function ClimateComponent() {
                 return;
             }
             setIsSettingsLoading(true);
-            const loadedSettings = await streamdeck.getSettings<ClimateSettings>();
+            const loadedSettings = await streamdeck.getSettings<BlindsSettings>();
             if (!didCancel) {
                 logger.log("Retrieved settings", loadedSettings);
                 setSettings(loadedSettings);
@@ -67,7 +68,7 @@ export function ClimateComponent() {
 
     const onIpChange = async (newAddress?: string) => {
         logger.log(`Handling new address ${newAddress}`);
-        const newSettings = settings == null ? {} as ClimateSettings : { ...settings };
+        const newSettings = settings == null ? {} as BlindsSettings : { ...settings };
         newSettings.address = newAddress ?? "";
         streamdeck.setSettings(newSettings);
         setSettings(newSettings);
@@ -76,9 +77,17 @@ export function ClimateComponent() {
 
     const onDeviceChange = async (newDevice?: Device) => {
         logger.log(`Handling new device ${newDevice?.name}`);
-        const newSettings = settings == null ? {} as ClimateSettings : { ...settings };
+        const newSettings = settings == null ? {} as BlindsSettings : { ...settings };
         newSettings.selectedDeviceId = newDevice?.id;
         newSettings.selectedDeviceName = newDevice?.name;
+        streamdeck.setSettings(newSettings);
+        setSettings(newSettings);
+    };
+
+    const onHeightCHange = async (newHeight?: number) => {
+        logger.log(`Handling new target height ${newHeight}`);
+        const newSettings = settings == null ? {} as BlindsSettings : { ...settings };
+        newSettings.targetHeight = newHeight;
         streamdeck.setSettings(newSettings);
         setSettings(newSettings);
     };
@@ -87,17 +96,19 @@ export function ClimateComponent() {
         return <Spinner />;
     }
 
-    const climateControls = devices.filter(device => device.deviceType === DeviceType.ClimateControl);
-    const deviceOptions = climateControls.map(climateControls => ({ name: climateControls.name, value: climateControls.id, payload: climateControls } as DropDownOption<Device>));
+    const blindsControls = devices.filter(device => device.deviceType === DeviceType.BlindsSwitch || device.deviceType === DeviceType.BlindsRelais);
+    const deviceOptions = blindsControls.map(blindControl => ({ name: blindControl.name, value: blindControl.id, payload: blindControl } as DropDownOption<Device>));
 
-    if (settings.selectedDeviceId == null && climateControls.length > 0) {
-        onDeviceChange(climateControls[0]);
+    if (settings.selectedDeviceId == null && blindsControls.length > 0) {
+        onDeviceChange(blindsControls[0]);
     }
 
     let editPanel: JSX.Element | null = (
         <>
             {!isDevicesLoading && devices != null &&
                 <DropDown items={deviceOptions} disabled={isDevicesLoading} defaultValue={settings.selectedDeviceId} onChange={newSelectedDevice => onDeviceChange(newSelectedDevice.payload)} />}
+            {settings != null && settings.selectedDeviceId != null && 
+                <NummericTextBox disabled={isDevicesLoading} defaultValue={settings.targetHeight} label="Target height" placeholder="Target height of the blinds" minValue={0} maxValue={0} onChange={(newHeight) => onHeightCHange(newHeight)} />}
         </>
     );
     if (settings.address == null || settings.address.length == 0) {

@@ -24,6 +24,18 @@
 			"Tooltip": "Show temperature/humidty",
             "UUID": "dev.fernhomberg.streamdeck.homematic.climate",
             "PropertyInspectorPath": "propertyInspector/Climate/climate.html"
+		},
+        {
+			"Icon": "assets/PluginLogo",
+			"Name": "Blinds",
+			"States": [
+				{
+                    "Image": "assets/PluginLogo"
+				}
+			],
+			"Tooltip": "Control window blinds",
+            "UUID": "dev.fernhomberg.streamdeck.homematic.blinds",
+            "PropertyInspectorPath": "propertyInspector/Blinds/blinds.html"
 		}
     ],
     
@@ -34,7 +46,7 @@
     "Description": "This plugin lets you control some Homematic devices from your Streamdeck",
     "Icon": "assets/PluginLogo",
     "URL": "https://github.com/lafe/Streamdeck-Homematic/",
-    "Version": "0.0.1",
+    "Version": "0.2.0",
     "OS": [
         {
             "Platform": "windows",
