@@ -1,6 +1,6 @@
 {
   "name": "streamdeck-homematic",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Streamdeck Plugin for the Homatic home automation system",
   "main": "index.js",
   "scripts": {
