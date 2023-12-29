@@ -24,7 +24,7 @@ The following HomeMatic devices are currently supported:
   - Toggle Switch
 - HomeMatic Wireless Wall Thermostat (HM-CC-TC)
   - Display temperature and humidity (pressing the button will switch between both)
-- Homematic Wireless Shutter controls (HM-LC-Bl1-PB-FM, HM-LC-Bl1PBU-FM and HmIP-BROLL-2)
+- Homematic Wireless Shutter controls (HM-LC-Bl1-PB-FM, HM-LC-Bl1PBU-FM and [HmIP-BROLL-2](https://homematic-ip.com/en/product/shutter-actuator-brand-switches))
 
 ## Development
 
