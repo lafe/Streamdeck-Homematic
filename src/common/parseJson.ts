@@ -10,7 +10,8 @@ export function parseJson<T>(rawData: string | unknown): T | null {
         const data = JSON.parse(rawData) as T;
         return data;
     } catch(e){
-        console.error(`While trying to convert the raw JSON data to an object, an error occured: ${e.message}`, e);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        console.error(`While trying to convert the raw JSON data to an object, an error occured: ${(e as any)?.message}`, e);
         return null;
     }
 }
