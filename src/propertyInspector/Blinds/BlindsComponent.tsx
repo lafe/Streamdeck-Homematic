@@ -111,7 +111,7 @@ export function BlindsComponent() {
         [logger, settings, streamdeck]
     );
 
-    const blindsControls = useMemo(() => devices.filter(device => device.deviceType === DeviceType.BlindsSwitch || device.deviceType === DeviceType.BlindsRelais), [devices]);
+    const blindsControls = useMemo(() => devices.filter(device => device.deviceType === DeviceType.BlindsSwitch || device.deviceType === DeviceType.BlindsRelais || device.deviceType === DeviceType.BlindsSwitchIp2), [devices]);
     const deviceOptions = useMemo(() => blindsControls.map(blindControl => ({ name: blindControl.name, value: blindControl.id, payload: blindControl } as DropDownOption<Device>)), [blindsControls]);
 
     if (settings == null || isSettingsLoading) {

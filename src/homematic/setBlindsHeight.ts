@@ -16,6 +16,9 @@ export async function setBlindsHeight(streamdeck: StreamDeck, settings?: BlindsS
         logger.error("The address of the XMLAPI endpoint is not set. Cannot change height of the blinds.");
         return;
     }
+    if (settings.securityToken == null || settings.securityToken.trim().length === 0) {
+        logger.warn("The security token of the XMLAPI endpoint is not set. It's likely that the height of the blinds cannot be changed.");
+    }
     if (settings.selectedDeviceId == null || settings.selectedDeviceId.trim().length === 0) {
         logger.error("The device ID of the relay is empty. Cannot change height of the blinds.");
         return;

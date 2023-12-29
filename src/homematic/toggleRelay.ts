@@ -16,6 +16,9 @@ export async function toggleRelay(streamdeck: StreamDeck, settings?: RelaySettin
         logger.error("The address of the XMLAPI endpoint is not set. Cannot toggle relay.");
         return;
     }
+    if (settings.securityToken == null || settings.securityToken.trim().length === 0) {
+        logger.warn("The security token of the XMLAPI endpoint is not set. It's likely that the relay cannot be toggled.");
+    }
     if (settings.selectedDeviceId == null || settings.selectedDeviceId.trim().length === 0) {
         logger.error("The device ID of the relay is empty. Cannot toggle relay.");
         return;
