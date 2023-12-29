@@ -32,31 +32,26 @@ function lint() {
         .pipe(eslint.failAfterError());
 }
 
-// async function buildTypeScript() {
-//     const webpackConfig = await import("./webpack.config.js");
-//     return src("./src/app.ts")
-//         .pipe(webpack(webpackConfig, compiler, (err) => {
-//             if (err != null) {
-//                 log.error(`An error occured during the webpack task: ${err.message}`, err);
-//             }
-//         }))
-//         .pipe(dest(srcDistFolder));
-// }
-
 async function buildTypeScript() {
     try {
         const webpackConfig = await import("./webpack.config.js");
-        return src("./src/app.ts")
-            .pipe(webpack(webpackConfig.default, compiler))
-            .on("error", function(err) {
-                log.error(`An error occurred during the webpack task: ${err.message}`, err);
-                this.emit("end"); // Ensure that Gulp knows the task has ended in case of error
-            })
-            .pipe(dest(srcDistFolder));
+        return new Promise((resolve, reject) => {
+            src("./src/app.ts")
+                .pipe(webpack(webpackConfig.default, compiler))
+                .on("error", function(err) {
+                    log.error(`An error occurred during the webpack task: ${err.message}`, err);
+                    this.emit("end"); // Ensure that Gulp knows the task has ended in case of error
+                    reject(err); // Reject the Promise on error
+                })
+                .pipe(dest(srcDistFolder))
+                .on("end", resolve); // Resolve the Promise when the stream ends
+        });
     } catch (err) {
         log.error(`An error occurred in buildTypeScript: ${err.message}`, err);
+        throw err; // Re-throw the error to be caught by Gulp's task system
     }
 }
+
 
 function copyHtml() {
     return src(["src/**/*.html", "src/**/*.css", "src/**/*.svg"])

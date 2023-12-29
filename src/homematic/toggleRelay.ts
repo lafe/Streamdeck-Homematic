@@ -22,7 +22,7 @@ export async function toggleRelay(streamdeck: StreamDeck, settings?: RelaySettin
     }
 
     logger.log(`Getting current state of device "${settings.selectedDeviceName}" (${settings.selectedDeviceId})`);
-    const currentState = await loadState(settings.address, settings.selectedDeviceId);
+    const currentState = await loadState(settings.address, settings.securityToken, settings.selectedDeviceId);
 
     if (currentState == null) {
         logger.warn(`Could not get current state of device "${settings.selectedDeviceName}" (${settings.selectedDeviceId})`);
@@ -41,6 +41,6 @@ export async function toggleRelay(streamdeck: StreamDeck, settings?: RelaySettin
 
         // Toggle based on current value
         const newValue = dataPoint.value == "1" || dataPoint.value == "true" ? "false" : "true";
-        await setState(settings.address, dataPoint.id, newValue);
+        await setState(settings.address, settings.securityToken, dataPoint.id, newValue);
     }
 }

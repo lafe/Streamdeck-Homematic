@@ -7,11 +7,12 @@ import { convertDevice } from "./convertDevice";
  * Returns the current state of a given device
  * 
  * @param homematicAddress The address of the HomeMatic CCU
+ * @param securityToken The security token to use for authentication
  * @param deviceId The ID of the device for which the state is needed
  */
-export async function loadState(homematicAddress: string, deviceId: string) {
+export async function loadState(homematicAddress: string, securityToken: string, deviceId: string) {
     const logger = getLogger("LoadState");
-    const url = buildUrl(homematicAddress, "state", { "device_id": deviceId });
+    const url = buildUrl(homematicAddress, securityToken, "state", { "device_id": deviceId });
     logger.log(`Loading state for device ${deviceId} from ${url}`);
 
     const rawResult = await fetch(url);

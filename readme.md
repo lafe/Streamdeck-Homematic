@@ -12,6 +12,8 @@ The plugin connects to the HomeMatic CCU using the [XML-API CCU Addon](https://g
 - [HomeMatic CCU2](https://www.eq-3.com/products/homematic/detail/homematic-central-control-unit-ccu2.html)
 - HomeMatic CCU1
 
+The plugin has been tested with version [2.3](https://github.com/homematic-community/XML-API/releases/tag/2.3) of the XML-API Addon. It supports the use of a security token, that has to be created manually using the `tokenregister.cgi` script of the XML-API Addon. For further information, see the discussion in the [Homematic Forum](https://homematic-forum.de/forum/viewtopic.php?f=41&t=77234#p749409) (unfortunately, only in German).
+
 ## Supported devices
 
 The software is currently only tested with the "normal" 15 key [Stream Deck](https://www.elgato.com/en/gaming/stream-deck). It is assumed that other Stream Deck variants (like [XL](https://www.elgato.com/en/gaming/stream-deck-xl) or [Mini](https://www.elgato.com/en/gaming/stream-deck-mini)) are working as well, but this has not been tested.

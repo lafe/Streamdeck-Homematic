@@ -26,7 +26,7 @@ export async function setBlindsHeight(streamdeck: StreamDeck, settings?: BlindsS
     }
 
     logger.log(`Getting current state of device "${settings.selectedDeviceName}" (${settings.selectedDeviceId})`);
-    const currentState = await loadState(settings.address, settings.selectedDeviceId);
+    const currentState = await loadState(settings.address, settings.securityToken, settings.selectedDeviceId);
 
     if (currentState == null) {
         logger.warn(`Could not get current state of device "${settings.selectedDeviceName}" (${settings.selectedDeviceId})`);
@@ -43,6 +43,6 @@ export async function setBlindsHeight(streamdeck: StreamDeck, settings?: BlindsS
     for (const dataPoint of stateDataPoints) {
         const newValue = settings.targetHeight / 100;
         logger.log(`Handling datapoint "${dataPoint.name}" (${dataPoint.id}) - Setting target height to ${newValue}`);
-        await setState(settings.address, dataPoint.id, newValue.toString());
+        await setState(settings.address, settings.securityToken, dataPoint.id, newValue.toString());
     }
 }

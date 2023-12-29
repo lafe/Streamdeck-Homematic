@@ -55,7 +55,7 @@ export class ClimateInstanceHandler extends BaseStreamDeckInstanceHandler<Climat
                 return;
             }
 
-            const device = await loadState(this.settings.address, this.settings.selectedDeviceId);
+            const device = await loadState(this.settings.address, this.settings.securityToken, this.settings.selectedDeviceId);
             if (device == null) {
                 this.logger.warn(`Could not load state data for device ${this.settings.selectedDeviceId}`);
                 return;

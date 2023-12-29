@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { getLogger } from "../../common/Logger";
 import { DropDown, DropDownOption } from "../../components/DropDown/DropDown";
 import { PropertyInspectorContainer } from "../../components/PropertyInspectorContainer/PropertyInspectorContainer";
@@ -25,7 +25,7 @@ export function ClimateComponent() {
         let didCancel = false;
         async function fetchDevices() {
             setIsDevicesLoading(true);
-            const fetchedDevices = settings?.address == null ? [] : await loadDevices(settings.address);
+            const fetchedDevices = settings == null ? [] : await loadDevices(settings.address, settings.securityToken);
             if (!didCancel) {
                 logger.log("Retrieved devices", fetchedDevices);
                 setDevices(fetchedDevices);
@@ -34,7 +34,7 @@ export function ClimateComponent() {
         }
         fetchDevices();
         return () => { didCancel = true; };
-    }, [settings?.address, logger]);
+    }, [settings, logger]);
 
     useEffect(() => {
         let didCancel = false;
@@ -65,31 +65,47 @@ export function ClimateComponent() {
         };
     }, [streamdeckConnected, logger, settings, streamdeck]);
 
-    const onIpChange = async (newAddress?: string) => {
-        logger.log(`Handling new address ${newAddress}`);
-        const newSettings = settings == null ? {} as ClimateSettings : { ...settings };
-        newSettings.address = newAddress ?? "";
-        streamdeck.setSettings(newSettings);
-        setSettings(newSettings);
+    const onIpChange = useCallback(
+        async (newAddress?: string) => {
+            logger.log(`Handling new address ${newAddress}`);
+            const newSettings = settings == null ? {} as ClimateSettings : { ...settings };
+            newSettings.address = newAddress ?? "";
+            streamdeck.setSettings(newSettings);
+            setSettings(newSettings);
 
-    };
+        },
+        [logger, settings, streamdeck]
+    );
+    
+    const onSecurityTokenChange = useCallback(
+        async (newToken?: string) => {
+            logger.log(`Handling new security token ${newToken}`);
+            const newSettings = settings == null ? {} as ClimateSettings : { ...settings };
+            newSettings.securityToken = newToken ?? "";
+            streamdeck.setSettings(newSettings);
+            setSettings(newSettings);
+        },
+        [logger, settings, streamdeck],
+    );
 
-    const onDeviceChange = async (newDevice?: Device) => {
-        logger.log(`Handling new device ${newDevice?.name}`);
-        const newSettings = settings == null ? {} as ClimateSettings : { ...settings };
-        newSettings.selectedDeviceId = newDevice?.id;
-        newSettings.selectedDeviceName = newDevice?.name;
-        streamdeck.setSettings(newSettings);
-        setSettings(newSettings);
-    };
+    const onDeviceChange = useCallback(
+        async (newDevice?: Device) => {
+            logger.log(`Handling new device ${newDevice?.name}`);
+            const newSettings = settings == null ? {} as ClimateSettings : { ...settings };
+            newSettings.selectedDeviceId = newDevice?.id;
+            newSettings.selectedDeviceName = newDevice?.name;
+            streamdeck.setSettings(newSettings);
+            setSettings(newSettings);
+        },
+        [logger, settings, streamdeck]
+    );
+
+    const climateControls = useMemo( () => devices.filter(device => device.deviceType === DeviceType.ClimateControl), [devices]);
+    const deviceOptions = useMemo(() => climateControls.map(climateControls => ({ name: climateControls.name, value: climateControls.id, payload: climateControls } as DropDownOption<Device>)), [climateControls]);
 
     if (settings == null || isSettingsLoading) {
         return <Spinner />;
     }
-
-    const climateControls = devices.filter(device => device.deviceType === DeviceType.ClimateControl);
-    const deviceOptions = climateControls.map(climateControls => ({ name: climateControls.name, value: climateControls.id, payload: climateControls } as DropDownOption<Device>));
-
     if (settings.selectedDeviceId == null && climateControls.length > 0) {
         onDeviceChange(climateControls[0]);
     }
@@ -107,6 +123,7 @@ export function ClimateComponent() {
     return (
         <PropertyInspectorContainer>
             <TextBox label="Address" placeholder="Address of Homematic CCU" defaultValue={settings.address} onChange={(newAddress) => onIpChange(newAddress)} />
+            <TextBox label="Security Token" placeholder="Security Token from Homematic CCU" defaultValue={settings.securityToken} onChange={(newToken) => onSecurityTokenChange(newToken)} />
             {isDevicesLoading &&
                 <Spinner />}
             {editPanel}

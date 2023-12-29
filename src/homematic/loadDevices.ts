@@ -6,9 +6,9 @@ import { DeviceType } from "./DeviceType";
 
 export const supportedDevices = [DeviceType.Relay];
 
-export async function loadDevices(homematicAddress: string): Promise<Device[]> {
+export async function loadDevices(homematicAddress: string, securityToken: string): Promise<Device[]> {
     const logger = getLogger("LoadDevices");
-    const url = buildUrl(homematicAddress, "devicelist");
+    const url = buildUrl(homematicAddress, securityToken, "devicelist");
     logger.log(`Loading device list from ${url}`);
     let rawResult: Response;
     try {
