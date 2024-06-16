@@ -43,7 +43,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "fancy-log": "^2.0.0",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "gulp-eslint": "^6.0.0",
     "gulp-json-editor": "^2.6.0",
     "style-loader": "3.3.3",
